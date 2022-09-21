@@ -28,7 +28,16 @@ app.post('/register', async (req, res) => {
     }
 });
 
-
+app.get('/login', async (req, res) => {
+    const {email,password} = req.body;
+    try {
+        const registerAccount = await pool.query('SELECT * FROM users WHERE (email, password) = ($1,$2)', [email,password])
+        return res.status(200).send(registerAccount.rows);
+    } 
+    catch (err) {
+        return res.status(400).send(err); 
+    }
+});
 
 app.listen(PORT);
 
